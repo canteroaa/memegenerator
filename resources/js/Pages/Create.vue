@@ -10,10 +10,12 @@ const textoMeme = ref(null);
 const colorTexto = ref("#000000");
 const colorBorde = ref("#FFFFFF");
 const fontSize = ref(30);
+const strokesize = ref(5);
 const fontFamily = ref("Arial");
 const drawing = ref(false);
 const brushWidth = ref(10);
 const brushColor = ref("#000000");
+const formColor = ref("#000000");
 
 const fontList = [
   "Arial",
@@ -41,8 +43,8 @@ const fontList = [
 
 onMounted(() => {
   canvas.value = new fabric.Canvas(canvasRef.value, {
-    width: 600,
-    height: 500,
+    width: 700,
+    height: 600,
     preserveObjectStacking: true, //superpone la imagen ante el texto
     isDrawingMode: drawing.value,
   });
@@ -72,6 +74,25 @@ const changeBrushColor = () => {
   canvas.value.requestRenderAll();
 }
 
+const changeFormColor = () => {
+  let selectedcolor = formColor.value;
+  let activeObject = canvas.value.getActiveObject();
+  let type = canvas.value.getActiveObject().get('type');
+
+  if (activeObject && (type === 'rect' || type === 'circle')) {
+    activeObject.set('stroke', selectedcolor);
+    canvas.value.requestRenderAll();
+  }
+
+  if(activeObject && type === 'group'){
+
+    activeObject._objects[0].set('stroke',selectedcolor);
+    activeObject._objects[1].set('fill',selectedcolor);
+    canvas.value.requestRenderAll();
+
+  }
+}
+
 const addRectangle = () => {
 
   const rect = new fabric.Rect({
@@ -80,13 +101,13 @@ const addRectangle = () => {
     width:300,
     height:200,
     fill: 'rgba(0,0,0,0)',
-    stroke: brushColor.value,
+    stroke: formColor.value,
     strokeWidth: 5,
     cornerSize: 15,
     cornerStyle: "circle",
   })
 
-  canvas.value.add(markRaw(rect));
+  canvas.value.add(markRaw(rect)).setActiveObject(markRaw(rect));
 
 }
 
@@ -96,12 +117,12 @@ const addCircle = () => {
     top: 0,
     left: 0,
     radius: 200,
-    stroke: brushColor.value,
+    stroke: formColor.value,
     strokeWidth: 8,
     fill: 'rgba(0,0,0,0)'
   })
 
-  canvas.value.add(markRaw(circle));
+  canvas.value.add(markRaw(circle)).setActiveObject(markRaw(circle));
 
 }
 
@@ -110,13 +131,13 @@ const addCircle = () => {
 const fileInput = ref(null);
 
 const handleFileChange = () => {
+  canvas.value.discardActiveObject();
   let img = fileInput.value.files[0];
   if (!img) {
     return;
   }
 
   let reader = new FileReader();
-
   reader.onload = function (e) {
     let data = reader.result;
     fabric.Image.fromURL(data, function (img) {
@@ -131,8 +152,9 @@ const handleFileChange = () => {
       canvas.value.sendToBack(img);
     });
   };
-
   reader.readAsDataURL(img);
+  fileInput.value.value = ''; //resetea el input
+  
 };
 
 const addText = () => {
@@ -147,10 +169,10 @@ const addText = () => {
     fill: colorTexto.value,
     fontFamily: fontFamily.value,
     stroke: colorBorde.value,
-    strokeWidth: 3,
+    strokeWidth: strokesize.value,
     paintFirst: 'stroke',
   });
-    canvas.value.add(markRaw(text));
+    canvas.value.add(markRaw(text)).setActiveObject(markRaw(text)); //agrega el texto y activa el objeto
     text.bringToFront();
     textoMeme.value = null;
   }
@@ -161,7 +183,9 @@ const changeFontInlne = () => {
 
   let selectedfont = fontFamily.value;
   let activeObject = canvas.value.getActiveObject();
-  if (activeObject) {
+  let type = canvas.value.getActiveObject().get('type');
+
+  if (activeObject && type === 'i-text') {
     activeObject.set('fontFamily', selectedfont);
     canvas.value.requestRenderAll();
   }
@@ -173,20 +197,22 @@ const changeColorInline = () => {
 
   let selectedcolor = colorTexto.value;
   let activeObject = canvas.value.getActiveObject();
+  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject) {
+  if (activeObject && type === 'i-text') {
     activeObject.set('fill', selectedcolor);
     canvas.value.requestRenderAll();
   }
 
 }
 
-const changeStrokeInline = () => {
+const changeStrokeColorInline = () => {
 
   let selectedcolor = colorBorde.value;
   let activeObject = canvas.value.getActiveObject();
+  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject) {
+  if (activeObject && type === 'i-text') {
     activeObject.set('stroke', selectedcolor);
     canvas.value.requestRenderAll();
   }
@@ -197,9 +223,23 @@ const changeFontsizeInline = () => {
 
   let size = parseInt(fontSize.value, 10);
   let activeObject = canvas.value.getActiveObject();
+  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject) {
+  if (activeObject && type === 'i-text') {
     activeObject.set('fontSize', size);
+    canvas.value.requestRenderAll();
+  }
+
+}
+
+const changeStrokeSizeInline = () => {
+
+  let size = parseInt(strokesize.value, 10);
+  let activeObject = canvas.value.getActiveObject();
+  let type = canvas.value.getActiveObject().get('type');
+
+  if (activeObject && type === 'i-text') {
+    activeObject.set('strokeWidth', size);
     canvas.value.requestRenderAll();
   }
 
@@ -226,6 +266,38 @@ const guardarMeme = () => {
   link.download = "meme.png";
   link.click();
 };
+
+
+
+const addArrow = () => {
+  const triangle = new fabric.Triangle({
+  width: 10, 
+  height: 15, 
+  fill: formColor.value, 
+  left: 235, 
+  top: 65,
+  angle: 90
+});
+const line = new fabric.Line([50, 100, 200, 100], {
+  left: 75,
+  top: 70,
+  stroke: formColor.value,
+});
+
+const objs = [line, triangle];
+
+const alltogetherObj = new fabric.Group(objs);
+
+canvas.value.add(markRaw(alltogetherObj)).setActiveObject(markRaw(alltogetherObj));
+
+}
+
+const clearAll = () => {
+  canvas.value.clear();
+  canvas.value.discardActiveObject().renderAll();
+}
+
+
 </script>
 
 <template>
@@ -262,7 +334,7 @@ const guardarMeme = () => {
       </div>
     </div>
     <div class="flex justify-center h-screen overflow-hidden flex-row">
-      <div class="bg-white h-fit flex flex-row space-x-3 p-3">
+      <div class="bg-white h-fit flex flex-row space-x-3 p-3 rounded-md">
         <div class="space-y-2">
           <div class="space-x-2 items-center flex">
               <input
@@ -273,57 +345,94 @@ const guardarMeme = () => {
               />
               <label class="font-ibm font-bold text-base uppercase" for="drawing">Modo dibujo</label>
           </div>
-          <div class=" flex flex-col">
-            <label class="font-ibm font-bold text-base uppercase" for="brushWidth">&#8595 Ancho de linea: &#8595</label>
-            <input
-                id="brushWidth"
-                class="cursor-pointer w-full"
-                v-model="brushWidth"
-                @change="changeBrushWidth"
-                step="1"
-                type="range"
-                min="1"
-                max="100"
-              />
-          </div>
-          <div class="items-center flex flex-col">
-                <label
-                  for="brushColor"
-                  class="font-bold font-ibm text-base uppercase"
-                >
-                 &#8595 Color de linea &#8595
-                </label>
-                <input
-                  id="brushColor"
-                  class="w-full cursor-pointer"
-                  type="color"
-                  v-model="brushColor"
-                  @change="changeBrushColor"
+          <div class="bg-black/10 p-2 mt-3 rounded-[4px] space-y-2">
+            <div class=" flex flex-col">
+              <label class="font-ibm font-bold text-base uppercase" for="brushWidth">&#8595 Ancho de linea &#8595</label>
+              <input
+                  id="brushWidth"
+                  class="cursor-pointer w-full"
+                  v-model="brushWidth"
+                  @change="changeBrushWidth"
+                  step="1"
+                  type="range"
+                  min="1"
+                  max="100"
                 />
+            </div>
+            <div class="items-center flex flex-col">
+                  <label
+                    for="brushColor"
+                    class="font-bold font-ibm text-base uppercase"
+                  >
+                   &#8595 Color de linea &#8595
+                  </label>
+                  <input
+                    id="brushColor"
+                    class="w-full cursor-pointer"
+                    type="color"
+                    v-model="brushColor"
+                    @change="changeBrushColor"
+                  />
+            </div>
           </div>
           <div class="flex justify-center">
             <span class="font-ibm font-bold text-base uppercase">FORMAS</span>
           </div>
+          <div class="bg-black/10 p-2 rounded-[4px] space-y-3">
+            <div class="flex justify-center">
+                <button
+                @click="addCircle"
+                  class="w-full bg-[#f4d738] py-2 rounded-[4px] border-2 border-black hover:bg-[#e3a018]"
+                >
+                  <span class="font-ibm font-bold text-base uppercase"
+                    >circulo &#128992</span
+                  >
+                </button>
+              </div>
+            <div class="flex justify-center">
+                <button
+                  @click="addRectangle"
+                  class="w-full bg-[#f4d738] py-2 rounded-[4px] border-2 border-black hover:bg-[#e3a018]"
+                >
+                  <span class="font-ibm font-bold text-base uppercase"
+                    >rectangulo &#128999</span
+                  >
+                </button>
+            </div>
+            <div class="flex justify-center">
+                <button
+                  @click="addArrow"
+                  class="w-full bg-[#f4d738] py-2 rounded-[4px] border-2 border-black hover:bg-[#e3a018]"
+                >
+                  <span class="font-ibm font-bold text-base uppercase"
+                    >flecha</span><span class="text-orange-500"> &#129034</span>
+                </button>
+            </div>
+            <div class="items-center flex flex-col">
+                  <label
+                    for="formColor"
+                    class="font-bold font-ibm text-base uppercase"
+                  >
+                   &#8595 Color de formas &#8595
+                  </label>
+                  <input
+                    id="formColor"
+                    class="w-full cursor-pointer"
+                    type="color"
+                    v-model="formColor"
+                    @input="changeFormColor"
+                  />
+            </div>
+          </div>
           <div class="flex justify-center">
               <button
-              @click="addCircle"
-                class="w-full bg-[#f4d738] py-2 rounded-[4px] border-2 border-black hover:bg-[#e3a018]"
+                @click="clearAll"
+                class="w-full bg-[#ff7a5c] py-2 rounded-[4px] border-2 border-black hover:bg-[#ff6b6b]"
               >
                 <span class="font-ibm font-bold text-base uppercase"
-                  >circulo &#128992</span
-                >
+                  >borrar todo</span>
               </button>
-            </div>
-          <div class="flex justify-center">
-              <button
-                @click="addRectangle"
-                class="w-full bg-[#f4d738] py-2 rounded-[4px] border-2 border-black hover:bg-[#e3a018]"
-              >
-                <span class="font-ibm font-bold text-base uppercase"
-                  >rectangulo &#128999</span
-                >
-              </button>
-            </div>
+          </div>
         </div>
         <div>
           <canvas class="border-2 border-black" ref="canvasRef"></canvas>
@@ -381,7 +490,7 @@ const guardarMeme = () => {
                 <input
                   id="colorBorde"
                   class="w-full cursor-pointer"
-                  @input="changeStrokeInline"
+                  @input="changeStrokeColorInline"
                   v-model="colorBorde"
                   type="color"
                 />
@@ -404,6 +513,26 @@ const guardarMeme = () => {
                 @change="changeFontsizeInline"
                 min="30"
                 max="200"
+              />
+            </div>
+            <div class="items-center flex flex-col mt-1">
+              <label
+                for="strokesize"
+                class="font-bold font-ibm text-lg uppercase"
+              >
+                <span> &#8595 Tamaño Borde:</span
+                ><span class="text-lime-600">{{ strokesize }}</span
+                ><span>px &#8595</span>
+              </label>
+              <input
+                id="strokesize"
+                class="w-full cursor-pointer"
+                v-model="strokesize"
+                type="range"
+                @change="changeStrokeSizeInline"
+                min="1"
+                max="30"
+                step="1"
               />
             </div>
             <div class="items-center flex flex-col mt-1">
@@ -435,15 +564,26 @@ const guardarMeme = () => {
               </button>
             </div>
           </div>
-          <div class="text-center mt-10">
-            <button
-              @click="guardarMeme"
-              class="bg-[#90ee90] w-full py-2 rounded-[4px] border-2 border-black hover:bg-[#7fbc8c]"
-            >
-              <span class="font-ibm font-bold text-lg uppercase"
-                >Descargar meme</span
+          <div class="mt-5 space-y-3">
+            <div class="text-center ">
+              <button
+                @click="guardarMeme"
+                class="bg-[#90ee90] w-full py-2 rounded-[4px] border-2 border-black hover:bg-[#7fbc8c]"
               >
-            </button>
+                <span class="font-ibm font-bold text-lg uppercase"
+                  >Descargar meme</span
+                >
+              </button>
+            </div>
+            <div class="text-center ">
+              <button
+                class="bg-[#90ee90] w-full py-2 rounded-[4px] border-2 border-black hover:bg-[#7fbc8c]"
+              >
+                <span class="font-ibm font-bold text-lg uppercase"
+                  >Guardar en Galeria</span
+                >
+              </button>
+            </div>
           </div>
         </div>
       </div>
