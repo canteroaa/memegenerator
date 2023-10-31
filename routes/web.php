@@ -40,10 +40,10 @@ Route::controller(MemeController::class)->group(function () {
 
     Route::get('/', 'index')->name('meme.index');
     Route::get('/create-meme', 'create')->name('meme.create');
-    Route::post('/upload-meme', 'store')->name('meme.store');
+    Route::post('/guardar-imagen', 'save')->name('meme.save');
+    Route::delete('/borrar-meme/{meme}', 'destroy')->name('meme.destroy');
+    //Route::post('/upload-meme', 'store')->name('meme.store');
 
-   /*  Route::get('/editar-configuracion/{configuracion_id}', 'edit')->name('configuracion.edit');
-    Route::put('/editar-configuracion/{configuracion}', 'update')->name('configuracion.update'); */
 });
 
 

@@ -11,19 +11,15 @@ class MemeController extends Controller
 {
     public function index()
     {
-        /* $meme = Meme::all(); */
 
+        $images = DB::table('memes')->get();
 
-        $images = DB::table('memes')->get(); // Supongamos que tienes una tabla llamada 'images'
-
-        // Convertir datos binarios a una URL base64
         foreach ($images as $image) {
-            $image->image = 'data:image/jpeg;base64,' . base64_encode(stream_get_contents($image->image));
+            $image->image = 'data:image/png;base64,' . base64_encode(stream_get_contents($image->image)); //convierte la imagen a base64
         }
 
 
         return Inertia::render('Index', [
-
 
             'images' => $images,
 
@@ -37,39 +33,32 @@ class MemeController extends Controller
         return Inertia::render('Create', []);
     }
 
-    public function store(Request $request)
+    public function save(Request $request)
     {
 
-        /*         $filename = '';
+        $imagen = $request->imagen;
 
-        if($request->hasFile('img')){
+        $cadenaBase64 = substr($imagen, strpos($imagen, ',') + 1); // Extrae la parte de la cadena Base64, después de la coma
 
-            $filename = $request->getSchemeAndHttpHost() . '/build/assets/images' . time() . '.' . $request->img->extension();
+        $query = "INSERT INTO memes (image) VALUES (decode('$cadenaBase64', 'base64'))"; // query que inserta la imagen decodeada
 
-            $request->img->move(public_path('/build/assets/images'), $filename);
+        DB::statement($query); // Ejecuta la consulta
 
-            Meme::create([
-                'image' => $filename,
-            ]);
+        return redirect()->route('meme.index');
+    }
 
-            return redirect()->back();
 
-        }
- */
-        /*        $imageData = file_get_contents($request->file('img')->getRealPath());
-        $image = new Meme();
-        
-        $image->image = pg_escape_bytea($imageData);
-        $image->save();
-        return redirect()->back(); */
+    
+    public function destroy(Meme $meme)
+    {
+        $meme->delete();
+        return redirect()->back();
+    }
 
- /*        $imagenRuta = 'ruta_de_la_imagen';
 
-        // Realiza la inserción en la tabla 'memes'
-        DB::table('memes')->insert([
-            'image' => DB::raw("pg_read_binary_file('$imagenRuta')")
-        ]); */
-
+    //subir imagenes a la base de datos
+    /*     public function store(Request $request)
+    {
 
         if ($request->hasFile('img') && $request->file('img')->isValid()) {
             $imagenRuta = $request->file('img')->path(); // Obtiene la ruta temporal de la imagen
@@ -79,6 +68,5 @@ class MemeController extends Controller
             ]);
             return redirect()->route('meme.index');
         }
-
-    }
+    } */
 }

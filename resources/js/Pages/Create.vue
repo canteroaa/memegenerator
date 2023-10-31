@@ -1,5 +1,5 @@
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import { fabric } from "fabric";
 import { onMounted, ref, computed } from "vue";
 import { markRaw } from "vue";
@@ -16,6 +16,11 @@ const drawing = ref(false);
 const brushWidth = ref(10);
 const brushColor = ref("#000000");
 const formColor = ref("#000000");
+
+
+const form = useForm({
+    imagen: '',
+});
 
 const fontList = [
   "Arial",
@@ -126,8 +131,6 @@ const addCircle = () => {
 
 }
 
-
-
 const fileInput = ref(null);
 
 const handleFileChange = () => {
@@ -153,7 +156,7 @@ const handleFileChange = () => {
     });
   };
   reader.readAsDataURL(img);
-  fileInput.value.value = ''; //resetea el input
+  fileInput.value.value = ''; //resetea lo que contiene el input file
   
 };
 
@@ -245,8 +248,6 @@ const changeStrokeSizeInline = () => {
 
 }
 
-
-
 window.addEventListener("keydown", (e) => {
   if (e.key === "Delete") {
     const activeObjects = canvas.value.getActiveObjects();
@@ -259,7 +260,7 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-const guardarMeme = () => {
+const descargarMeme = () => {
   let dataURL = canvas.value.toDataURL();
   let link = document.createElement("a");
   link.href = dataURL;
@@ -267,6 +268,10 @@ const guardarMeme = () => {
   link.click();
 };
 
+const guardarGaleria = () => {
+    form.imagen = canvas.value.toDataURL();
+    form.post(route('meme.save'));
+};
 
 
 const addArrow = () => {
@@ -301,16 +306,6 @@ const clearAll = () => {
 </script>
 
 <template>
-  <!--   <div>
-    <form action="/upload-meme" method="post" enctype="multipart/form-data">
-      <input type="file" name="img" />
-      <canvas class="bg-red-500"></canvas>
-      <div>
-        <button type="submit">Guardar</button>
-      </div>
-    </form>
-  </div> -->
-
   <Head title="Crear Meme" />
   <div class="bg-celeste">
     <header class="bg-lila">
@@ -567,7 +562,7 @@ const clearAll = () => {
           <div class="mt-5 space-y-3">
             <div class="text-center ">
               <button
-                @click="guardarMeme"
+                @click="descargarMeme"
                 class="bg-[#90ee90] w-full py-2 rounded-[4px] border-2 border-black hover:bg-[#7fbc8c]"
               >
                 <span class="font-ibm font-bold text-lg uppercase"
@@ -577,6 +572,7 @@ const clearAll = () => {
             </div>
             <div class="text-center ">
               <button
+                @click="guardarGaleria"
                 class="bg-[#90ee90] w-full py-2 rounded-[4px] border-2 border-black hover:bg-[#7fbc8c]"
               >
                 <span class="font-ibm font-bold text-lg uppercase"
