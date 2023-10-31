@@ -1,28 +1,34 @@
 <script setup>
 import { Head, Link, router } from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
+// Se obtienen las imágenes del objeto de propiedades usando la función defineProps
 const { images } = defineProps(["images"]);
 
-const modal = ref(false);
-const modalDelete = ref(false);
+const modal = ref(false); //Variable para controlar el modal
+const modalDelete = ref(false);//Variable para controlar el modal "Delete"
 
+// Abre o cierra el modal
 const modalChange = () => {
   modal.value = !modal.value;
 };
 
+// Abre o cierra el modal "Delete"
 const modalDeleteChange = () => {
   modalDelete.value = !modalDelete.value;
 };
 
+// variable que contiene el meme seleccionado
 let selectedImage = ref();
 
+// Abre el modal con el meme seleccionada
 const openImage = (image) => {
   selectedImage.value = image;
   modal.value = !modal.value;
 };
 
+// Descarga el meme
 const downloadMeme = () => {
   let dataURL = selectedImage.value.image;
   let link = document.createElement("a");
@@ -31,6 +37,7 @@ const downloadMeme = () => {
   link.click();
 };
 
+//Borra el meme seleccionado
 function deleteMeme(id){
 
 router.delete(route('meme.destroy',id));
@@ -89,6 +96,7 @@ modalDelete.value = !modalDelete.value;
                     alt="Imagen"
                     class="w-full cursor-pointer h-64 object-cover rounded-lg shadow-md transition-transform transform scale-100 group-hover:scale-105"
                   />
+                  <!--Modal que abre cuando se hace click en el meme-->
                   <Modal :show="modal" @close="modalChange">
                     <div>
                       <img
@@ -128,6 +136,7 @@ modalDelete.value = !modalDelete.value;
                       </div>
                     </div>
                   </Modal>
+                  <!--Modal con mensaje de confirmación para borrar el meme-->
                   <Modal :show="modalDelete" maxWidth="sm" @close="modalDeleteChange">
                         <div class="flex flex-col p-4">
                           <div>

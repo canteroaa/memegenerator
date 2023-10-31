@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class MemeController extends Controller
 {
+    //Funcion para mostrar todas las imagenes
     public function index()
     {
-
+        // Obtiene todas las imagenes de la base de datos
         $images = DB::table('memes')->get();
 
-        foreach ($images as $image) {
+        foreach ($images as $image) { //recorre cada imagen
             $image->image = 'data:image/png;base64,' . base64_encode(stream_get_contents($image->image)); //convierte la imagen a base64
         }
 
@@ -26,29 +27,30 @@ class MemeController extends Controller
         ]);
     }
 
-
+    //Función que devuelve la vista de crear meme
     public function create()
     {
 
         return Inertia::render('Create', []);
     }
 
+    //Función que guarda el meme en la base de datos
     public function save(Request $request)
     {
 
-        $imagen = $request->imagen;
+        $imagen = $request->imagen; // Obtiene la imagen en base64
 
         $cadenaBase64 = substr($imagen, strpos($imagen, ',') + 1); // Extrae la parte de la cadena Base64, después de la coma
 
         $query = "INSERT INTO memes (image) VALUES (decode('$cadenaBase64', 'base64'))"; // query que inserta la imagen decodeada
 
-        DB::statement($query); // Ejecuta la consulta
+        DB::statement($query); // Ejecuta la consulta "query"
 
-        return redirect()->route('meme.index');
+        return redirect()->route('meme.index'); // redirecciona a la vista de index
     }
 
 
-    
+    //Función que elimina el meme
     public function destroy(Meme $meme)
     {
         $meme->delete();
@@ -56,7 +58,7 @@ class MemeController extends Controller
     }
 
 
-    //subir imagenes a la base de datos
+    //subir una imagen de la pc a la base de datos
     /*     public function store(Request $request)
     {
 

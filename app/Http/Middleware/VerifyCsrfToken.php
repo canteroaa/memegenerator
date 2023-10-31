@@ -12,7 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/upload-meme',
-        '/guardar-imagen',
+        //'/upload-meme',
+        '/guardar-imagen', //habilita el endpoint que permite guardar una imagen en la bd
     ];
 }

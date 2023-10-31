@@ -4,6 +4,7 @@ import { fabric } from "fabric";
 import { onMounted, ref, computed } from "vue";
 import { markRaw } from "vue";
 
+//Variables reactivas
 const canvasRef = ref(null);
 const canvas = ref(null);
 const textoMeme = ref(null);
@@ -17,11 +18,12 @@ const brushWidth = ref(10);
 const brushColor = ref("#000000");
 const formColor = ref("#000000");
 
-
+//Variable que contiene el meme resultante
 const form = useForm({
     imagen: '',
 });
 
+//Listado de fuentes
 const fontList = [
   "Arial",
   "Helvetica",
@@ -45,7 +47,7 @@ const fontList = [
   "Century Gothic",
 ];
 
-
+//Inicializa el canvas al cargar el componente
 onMounted(() => {
   canvas.value = new fabric.Canvas(canvasRef.value, {
     width: 700,
@@ -57,15 +59,14 @@ onMounted(() => {
   canvas.value.freeDrawingBrush.color = brushColor.value;
 });
 
-
-
+//Activa o desactiva el modo dibujo
 const changeMode = computed(() => {
   
   canvas.value.isDrawingMode = drawing.value;
   
 });
 
-
+//Tamaño de la lapiz
 const changeBrushWidth = () => {
   let size = parseInt(brushWidth.value, 10);
   canvas.value.freeDrawingBrush.width = size;
@@ -73,23 +74,24 @@ const changeBrushWidth = () => {
 
 }
 
+//Color de la lapiz
 const changeBrushColor = () => {
   let color = brushColor.value
   canvas.value.freeDrawingBrush.color = color;
   canvas.value.requestRenderAll();
 }
 
+//Color de las formas (rectangulo, circulo y flecha)
 const changeFormColor = () => {
   let selectedcolor = formColor.value;
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject && (type === 'rect' || type === 'circle')) {
+  if (activeObject && (activeObject.type === 'rect' || activeObject.type === 'circle')) {
     activeObject.set('stroke', selectedcolor);
     canvas.value.requestRenderAll();
   }
 
-  if(activeObject && type === 'group'){
+  if(activeObject && activeObject.type === 'group'){
 
     activeObject._objects[0].set('stroke',selectedcolor);
     activeObject._objects[1].set('fill',selectedcolor);
@@ -98,6 +100,7 @@ const changeFormColor = () => {
   }
 }
 
+//Agrega un rectangulo
 const addRectangle = () => {
 
   const rect = new fabric.Rect({
@@ -116,6 +119,7 @@ const addRectangle = () => {
 
 }
 
+//Agrega un circulo
 const addCircle = () => {
 
   const circle = new fabric.Circle({
@@ -131,8 +135,9 @@ const addCircle = () => {
 
 }
 
-const fileInput = ref(null);
+const fileInput = ref(null); //variable ref para el input file
 
+//Agrega una imagen al canvas
 const handleFileChange = () => {
   canvas.value.discardActiveObject();
   let img = fileInput.value.files[0];
@@ -160,6 +165,7 @@ const handleFileChange = () => {
   
 };
 
+//Agrega un texto
 const addText = () => {
   canvas.value.discardActiveObject(); //desactiva el objeto activo
 
@@ -176,78 +182,77 @@ const addText = () => {
     paintFirst: 'stroke',
   });
     canvas.value.add(markRaw(text)).setActiveObject(markRaw(text)); //agrega el texto y activa el objeto
-    text.bringToFront();
+    text.bringToFront(); //superpone el texto
     textoMeme.value = null;
   }
 };
 
-
+//Cambia el tipo de fuente del texto seleccionado
 const changeFontInlne = () => {
 
   let selectedfont = fontFamily.value;
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
-
-  if (activeObject && type === 'i-text') {
+  
+  if (activeObject && activeObject.type === 'i-text') {
     activeObject.set('fontFamily', selectedfont);
     canvas.value.requestRenderAll();
   }
 }
 
 
-
+//Cambia el color del texto seleccionado
 const changeColorInline = () => {
 
   let selectedcolor = colorTexto.value;
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject && type === 'i-text') {
+  if (activeObject && activeObject.type === 'i-text') {
     activeObject.set('fill', selectedcolor);
     canvas.value.requestRenderAll();
   }
 
 }
 
+//Cambia el color del borde del texto seleccionado
 const changeStrokeColorInline = () => {
 
   let selectedcolor = colorBorde.value;
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject && type === 'i-text') {
+  if (activeObject && activeObject.type === 'i-text') {
     activeObject.set('stroke', selectedcolor);
     canvas.value.requestRenderAll();
   }
 
 }
 
+//Cambia el tamaño del texto seleccionado
 const changeFontsizeInline = () => {
 
   let size = parseInt(fontSize.value, 10);
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject && type === 'i-text') {
+  if (activeObject && activeObject.type === 'i-text') {
     activeObject.set('fontSize', size);
     canvas.value.requestRenderAll();
   }
 
 }
 
+//Cambia el tamaño del borde del texto seleccionado
 const changeStrokeSizeInline = () => {
 
   let size = parseInt(strokesize.value, 10);
   let activeObject = canvas.value.getActiveObject();
-  let type = canvas.value.getActiveObject().get('type');
 
-  if (activeObject && type === 'i-text') {
+  if (activeObject && activeObject.type === 'i-text') {
     activeObject.set('strokeWidth', size);
     canvas.value.requestRenderAll();
   }
 
 }
 
+//Borra el o los objetos seleccionado/s con la tecla "Delete"
 window.addEventListener("keydown", (e) => {
   if (e.key === "Delete") {
     const activeObjects = canvas.value.getActiveObjects();
@@ -260,6 +265,19 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+//Borra solamente el dibujo trazado en el canvas
+const borrarDibujo = () =>{
+  let objects = canvas.value.getObjects();
+  if(objects){
+    objects.forEach((object) => {
+      if(object.type === 'path'){
+        canvas.value.remove(object); 
+      }
+    })
+  }
+}
+
+//Descarga el meme resultante
 const descargarMeme = () => {
   let dataURL = canvas.value.toDataURL();
   let link = document.createElement("a");
@@ -268,12 +286,13 @@ const descargarMeme = () => {
   link.click();
 };
 
+//Guarda el meme en la base de datos
 const guardarGaleria = () => {
     form.imagen = canvas.value.toDataURL();
     form.post(route('meme.save'));
 };
 
-
+//Agrega un flecha
 const addArrow = () => {
   const triangle = new fabric.Triangle({
   width: 10, 
@@ -297,11 +316,11 @@ canvas.value.add(markRaw(alltogetherObj)).setActiveObject(markRaw(alltogetherObj
 
 }
 
+//Limpia el canvas
 const clearAll = () => {
   canvas.value.clear();
   canvas.value.discardActiveObject().renderAll();
 }
-
 
 </script>
 
@@ -419,6 +438,15 @@ const clearAll = () => {
                   />
             </div>
           </div>
+          <div class="flex justify-center py-2">
+              <button
+                @click="borrarDibujo"
+                class="w-full bg-[#ff7a5c] py-2 rounded-[4px] border-2 border-black hover:bg-[#ff6b6b]"
+              >
+                <span class="font-ibm font-bold text-base uppercase"
+                  >borrar dibujo</span>
+              </button>
+          </div>
           <div class="flex justify-center">
               <button
                 @click="clearAll"
@@ -449,8 +477,6 @@ const clearAll = () => {
             />
           </div>
           <div class="bg-black/10 p-2 mt-3 rounded-[4px] space-y-3">
-            <!--DIBUJO-->
-
             <div>
               <textarea
                 class="w-full caret-blue-400 rounded-md font-ibm bg-gray-200 focus:bg-gray-300"

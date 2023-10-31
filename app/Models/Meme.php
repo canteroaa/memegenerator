@@ -9,7 +9,7 @@ class Meme extends Model
 {
     use HasFactory;
 
-    protected $connection = 'pgsql';
+    protected $connection = 'pgsql'; //especifica la conexión de BD a utilizar (PostgreSQL)
 
-    protected $guarded = [];
+    protected $guarded = []; 
 }
