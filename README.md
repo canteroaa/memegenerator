@@ -1,66 +1,93 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Meme Generator
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es un generador de memes desarrollado con **Laravel**, **PostgreSQL** y Vue. Proporciona una aplicación web para crear, ver, descargar y guardar en la base de datos memes de manera sencilla y divertida.
 
-## About Laravel
+## Demostración de Características
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A continuación se muestran GIFs que ilustran las principales funcionalidades de la aplicación de generación de memes:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. **Imagen Adaptable**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+![Imagen adaptable](https://github.com/canteroaa/gestionproyectos/assets/111013326/ac5013f8-90ce-4ce2-b6fe-35aeaf72169a)
 
-## Learning Laravel
+2. **Texto Personalizable y Editable**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+![Texto personalizable y editable](https://github.com/canteroaa/gestionproyectos/assets/111013326/5ade5fa0-7547-4a91-80fb-8d92d968884e)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+3. **Modo de Dibujo y Formas**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+![Modo de dibujo y formas](https://github.com/canteroaa/gestionproyectos/assets/111013326/ca13c74b-8b7b-4850-892f-e33c79a6b555)
 
-## Laravel Sponsors
+4. **Descarga y Almacenamiento de Memes**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+![Desacargar Meme o Guardarlo en la BD](https://github.com/canteroaa/gestionproyectos/assets/111013326/9d33833b-dcb3-4379-9bcf-1e8f2cdd3541)
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+5. **Visualización en la Galería**
 
-## Contributing
+![Visualización en Galería](https://github.com/canteroaa/gestionproyectos/assets/111013326/d4d7390c-1e55-482e-83bc-f4ae5e12b97a)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Cada GIF representa una característica clave de la aplicación y demuestra su funcionalidad de manera concisa.
 
-## Code of Conduct
+## Características
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Creación de Memes:** Los usuarios pueden generar memes personalizados utilizando una interfaz fácil e intuitiva de usar.
+- **Almacenamiento:** Se utiliza PostgreSQL para la gestión de la base de datos, asegurando un almacenamiento confiable.
+- **Exploración:** Posibilidad de explorar la galería de memes que fueron generados y guardados en la base de datos.
+- **Descarga:** Funcionalidad que permite a los usuarios descargar los memes generados para compartirlos donde deseen.
+- **Eliminación:** Permite a los usuarios borrar los memes de la galería.
 
-## Security Vulnerabilities
+##  Tecnologías y Librerías  Utilizadas 
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **Laravel:** Framework de desarrollo web en PHP.
+- **PostgreSQL:** Sistema de gestión de base de datos relacional.
+- **Vue:** Framework progresivo de JavaScript para la construcción de interfaces de usuario en el lado del cliente.
+- **InertiaJS:** Biblioteca que permite a Vue.js trabajar sin problemas con aplicaciones de servidor renderizadas. Facilita la comunicación entre el frontend Vue.js y el backend Laravel.
+- **Fabric.js:** Biblioteca de JavaScript para la manipulación de gráficos y la edición de imágenes en tiempo real en el navegador.
 
-## License
+## Instalación
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para ejecutar este proyecto localmente, sigue estos pasos:
+
+1. **Clona este repositorio:**
+    ```bash
+    git clone https://github.com/canteroaa/memegenerator.git
+    ```
+
+2. **Instala las dependencias del proyecto:**
+    ```bash
+    composer install
+    ```
+
+3. **Instala las dependencias del lado del cliente:**
+    ```bash
+    npm install
+    ```
+
+4. **Genera la clave de la aplicación:**
+    ```bash
+    php artisan key:generate
+    ```
+
+5. **Configura el archivo `.env`:**
+
+   Configura los datos de tu base de datos **PostgreSQL** en el archivo `.env`.
+
+6. **Ejecuta las migraciones para crear la estructura de la base de datos:**
+    ```bash
+    php artisan migrate
+    ```
+
+7. **Inicia el servidor local:**
+    ```bash
+    php artisan serve
+    ```
+
+## Contacto
+
+Si tenés consultas adicionales, no dudes en contactarme:
+
+- **Correo Electrónico:** [ocampocanteroaaron@fpuna.edu.py](mailto:ocampocanteroaaron@fpuna.edu.py)
+- **LinkedIn:** [linkedin.com/in/canteroaa/](https://www.linkedin.com/in/canteroaa/)
+
+¡Estoy emocionado por compartir más detalles sobre el proyecto y estoy abierto a cualquier pregunta o discusión adicional! No dudes en contactarme por cualquiera de los medios mencionados anteriormente.

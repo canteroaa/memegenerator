@@ -157,7 +157,7 @@ const handleFileChange = () => {
         img.scaleToHeight(canvas.value.height);
       }
 
-      canvas.value.sendToBack(img);
+      //canvas.value.sendToBack(img);
     });
   };
   reader.readAsDataURL(img);
