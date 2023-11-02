@@ -1,6 +1,6 @@
 # Meme Generator
 
-Este proyecto es un generador de memes desarrollado con **Laravel**, **PostgreSQL** y Vue. Proporciona una aplicación web para crear, ver, descargar y guardar en la base de datos memes de manera sencilla y divertida.
+Este proyecto es una aplicación de Generador de Memes que permite a los usuarios crear memes, almacenarlos en una base de datos o descargarlos. Los memes generados se mostrarán en una vista de galería al acceder a la aplicación. Fue desarrollado como parte del proceso de selección para el puesto de Desarrollador Junior en Unnaki, utilizando principalmente Laravel y Postgres.
 
 ## Demostración de Características
 
