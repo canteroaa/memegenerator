@@ -8,24 +8,24 @@ A continuación se muestran GIFs que ilustran las principales funcionalidades de
 
 1. **Imagen Adaptable**
 
-![Imagen adaptable](https://github.com/canteroaa/gestionproyectos/assets/111013326/ac5013f8-90ce-4ce2-b6fe-35aeaf72169a)
+![1 15 fps](https://github.com/canteroaa/canteroaa/assets/111013326/c84ca538-f11f-48e3-88ff-d0f62da410d9)
 
 2. **Texto Personalizable y Editable**
 
-![Texto personalizable y editable](https://github.com/canteroaa/gestionproyectos/assets/111013326/5ade5fa0-7547-4a91-80fb-8d92d968884e)
+![2 15 fps](https://github.com/canteroaa/canteroaa/assets/111013326/09e5fe81-7ef2-4da5-8b1a-0ce292ad0717)
 
 3. **Modo de Dibujo y Formas**
 
-![Modo de dibujo y formas](https://github.com/canteroaa/gestionproyectos/assets/111013326/ca13c74b-8b7b-4850-892f-e33c79a6b555)
+![3 15 fps](https://github.com/canteroaa/canteroaa/assets/111013326/149d1479-f75f-450d-b88e-81c21dde9dc8)
 
 4. **Descarga y Almacenamiento de Memes**
 
-![Desacargar Meme o Guardarlo en la BD](https://github.com/canteroaa/gestionproyectos/assets/111013326/9d33833b-dcb3-4379-9bcf-1e8f2cdd3541)
+![4 15fps](https://github.com/canteroaa/canteroaa/assets/111013326/915ad97b-86d0-4369-a996-824d04a36008)
 
 
 5. **Visualización en la Galería**
 
-![Visualización en Galería](https://github.com/canteroaa/gestionproyectos/assets/111013326/d4d7390c-1e55-482e-83bc-f4ae5e12b97a)
+![5 15fps](https://github.com/canteroaa/canteroaa/assets/111013326/9892ee89-39fd-4563-b28f-7710a3b36e67)
 
 Cada GIF representa una característica clave de la aplicación y demuestra su funcionalidad de manera concisa.
 
