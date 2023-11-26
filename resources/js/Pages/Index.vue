@@ -22,7 +22,7 @@ const modalDeleteChange = () => {
 // variable que contiene el meme seleccionado
 let selectedImage = ref();
 
-// Abre el modal con el meme seleccionada
+// Abre el modal con el meme seleccionado
 const openImage = (image) => {
   selectedImage.value = image;
   modal.value = !modal.value;
@@ -43,7 +43,7 @@ function deleteMeme(id){
 router.delete(route('meme.destroy',id));
 modal.value = !modal.value;
 modalDelete.value = !modalDelete.value;
-  
+
 }
 
 </script>
@@ -153,7 +153,7 @@ modalDelete.value = !modalDelete.value;
                                   Borrar
                               </button>
                             </div>
-                            
+
                             <div>
                               <button
                                 type="button"
